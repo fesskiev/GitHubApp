@@ -2,12 +2,11 @@ package com.github.presentation.details
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.github.domain.model.GitHubUser
 import com.github.domain.model.GitHubUserDetails
 import com.github.presentation.ViewEvent
 import com.github.presentation.ViewSideEffect
 import com.github.presentation.ViewState
-import com.github.presentation.list.GitHubUserListContract
+import com.github.presentation.model.GitHubUserUi
 
 class GitHubUserDetailsContract {
 
@@ -22,7 +21,7 @@ class GitHubUserDetailsContract {
     @Stable
     @Immutable
     sealed class Event : ViewEvent {
-        data class GetGitHubUserDetailsAction(val user: GitHubUser) : Event()
+        data class GetGitHubUserDetailsAction(val user: GitHubUserUi) : Event()
         data object ToggleFavouriteGitHubUserAction : Event()
     }
 

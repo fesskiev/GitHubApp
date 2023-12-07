@@ -27,13 +27,13 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import com.github.domain.model.GitHubUser
 import com.github.domain.model.GitHubUserDetails
 import com.github.presentation.components.ErrorView
 import com.github.presentation.components.FavouriteTopBar
 import com.github.presentation.components.ProgressBar
 import com.github.presentation.details.GitHubUserDetailsContract.Event
 import com.github.presentation.details.GitHubUserDetailsContract.State
+import com.github.presentation.model.GitHubUserUi
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -41,16 +41,16 @@ import com.google.accompanist.placeholder.material.shimmer
 @Composable
 fun GitHubUserDetailsScreen(
     viewModel: GitHubUserDetailsViewModel,
-    gitHubUser: GitHubUser,
+    gitHubUser: GitHubUserUi,
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.viewState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
-        viewModel.sendViewEvent(Event.GetGitHubUserDetailsAction(gitHubUser))
+        (viewModel::sendViewEvent)(Event.GetGitHubUserDetailsAction(gitHubUser))
     }
     GitHubUserDetailsContent(
         uiState,
-        onFavouriteToggle = { viewModel.sendViewEvent(Event.ToggleFavouriteGitHubUserAction) },
+        onFavouriteToggle = { (viewModel::sendViewEvent)(Event.ToggleFavouriteGitHubUserAction) },
         onBackPressed
     )
 }

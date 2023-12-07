@@ -2,10 +2,10 @@ package com.github.presentation.list
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.github.domain.model.GitHubUser
 import com.github.presentation.ViewEvent
 import com.github.presentation.ViewSideEffect
 import com.github.presentation.ViewState
+import com.github.presentation.model.GitHubUserUi
 
 class GitHubUserListContract {
 
@@ -15,8 +15,8 @@ class GitHubUserListContract {
         val isLoading: Boolean = false,
         val isFilterActive: Boolean = false,
         val error: Throwable? = null,
-        val users: List<GitHubUser> = listOf(),
-        val groupedUsers: Map<Char, List<GitHubUser>> = mapOf()
+        val users: List<GitHubUserUi> = listOf(),
+        val groupedUsers: Map<Char, List<GitHubUserUi>> = mapOf()
     ) : ViewState
 
     @Stable
@@ -24,13 +24,15 @@ class GitHubUserListContract {
     sealed class Event : ViewEvent {
         data object GetGitHubUsersAction : Event()
         data object ToggleFilterAction : Event()
-        data class GitHubUserClickAction(val user: GitHubUser) : Event()
-        data class ToggleFavouriteGitHubUserAction(val user: GitHubUser) : Event()
+        data class GitHubUserClickAction(val user: GitHubUserUi) : Event()
+        data class ToggleFavouriteGitHubUserAction(val user: GitHubUserUi) : Event()
     }
 
     @Stable
     @Immutable
     sealed class Effect : ViewSideEffect {
-        data class ShowGitHubUserDetailsScreen(val user: GitHubUser) : Effect()
+        data class ShowGitHubUserDetailsScreen(val user: GitHubUserUi) : Effect()
     }
 }
+
+

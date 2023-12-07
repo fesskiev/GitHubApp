@@ -9,6 +9,9 @@ class UpdateGitHubUserFavouriteUseCase @Inject constructor(
 
     suspend operator fun invoke(login: String, isFavourite: Boolean): Result<Unit> =
         runCatching {
+            if (login.isEmpty()) {
+                error("login must not be empty!")
+            }
             repository.updateGitHubUserFavourite(login, isFavourite)
         }
 }

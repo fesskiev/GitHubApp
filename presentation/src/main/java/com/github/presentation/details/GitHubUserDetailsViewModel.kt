@@ -1,7 +1,6 @@
 package com.github.presentation.details
 
 import androidx.lifecycle.viewModelScope
-import com.github.domain.model.GitHubUser
 import com.github.domain.model.GitHubUserDetails
 import com.github.domain.usecase.GetGitHubUserDetailsUseCase
 import com.github.domain.usecase.UpdateGitHubUserFavouriteUseCase
@@ -9,6 +8,7 @@ import com.github.presentation.BaseViewModel
 import com.github.presentation.details.GitHubUserDetailsContract.Event
 import com.github.presentation.details.GitHubUserDetailsContract.Effect
 import com.github.presentation.details.GitHubUserDetailsContract.State
+import com.github.presentation.model.GitHubUserUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +41,7 @@ class GitHubUserDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getGitHubUserDetails(user: GitHubUser) {
+    private fun getGitHubUserDetails(user: GitHubUserUi) {
         viewModelScope.launch {
             showProgress()
             getGitHubUserDetailsUseCase(user.login)
@@ -60,7 +60,7 @@ class GitHubUserDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun showGitHubUserDetails(user: GitHubUser, userDetails: GitHubUserDetails) {
+    private fun showGitHubUserDetails(user: GitHubUserUi, userDetails: GitHubUserDetails) {
         setViewState {
             copy(
                 isLoading = false,

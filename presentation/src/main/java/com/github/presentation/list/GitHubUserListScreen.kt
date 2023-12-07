@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +37,6 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import com.github.domain.model.GitHubUser
 import com.github.presentation.R
 import com.github.presentation.components.ErrorView
 import com.github.presentation.components.ProgressBar
@@ -44,6 +44,7 @@ import com.github.presentation.components.FilterTopBar
 import com.github.presentation.list.GitHubUserListContract.Event
 import com.github.presentation.list.GitHubUserListContract.State
 import com.github.presentation.list.GitHubUserListContract.Effect
+import com.github.presentation.model.GitHubUserUi
 import com.github.presentation.utils.rememberForeverLazyListState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -52,11 +53,11 @@ import com.google.accompanist.placeholder.material.shimmer
 @Composable
 fun GitHubUserListScreen(
     viewModel: GitHubUserListViewModel,
-    onUserClick: (GitHubUser) -> Unit,
+    onUserClick: (GitHubUserUi) -> Unit,
 ) {
     val uiState by viewModel.viewState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
-        viewModel.sendViewEvent(Event.GetGitHubUsersAction)
+        (viewModel::sendViewEvent)(Event.GetGitHubUsersAction)
     }
     viewModel.viewEffect.collectAsStateWithLifecycle(null).value?.let {
         LaunchedEffect(Unit) {
@@ -67,9 +68,9 @@ fun GitHubUserListScreen(
     }
     GitHubUserListContent(
         uiState,
-        onFilterClick = { viewModel.sendViewEvent(Event.ToggleFilterAction) },
-        onUserClick = { viewModel.sendViewEvent(Event.GitHubUserClickAction(it)) },
-        onFavouriteUserClick = { viewModel.sendViewEvent(Event.ToggleFavouriteGitHubUserAction(it))}
+        onFilterClick = { (viewModel::sendViewEvent)(Event.ToggleFilterAction) },
+        onUserClick = { (viewModel::sendViewEvent)(Event.GitHubUserClickAction(it)) },
+        onFavouriteUserClick = { (viewModel::sendViewEvent)(Event.ToggleFavouriteGitHubUserAction(it)) }
     )
 }
 
@@ -77,8 +78,8 @@ fun GitHubUserListScreen(
 private fun GitHubUserListContent(
     uiState: State,
     onFilterClick: () -> Unit,
-    onUserClick: (GitHubUser) -> Unit,
-    onFavouriteUserClick: (GitHubUser) -> Unit
+    onUserClick: (GitHubUserUi) -> Unit,
+    onFavouriteUserClick: (GitHubUserUi) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -114,9 +115,9 @@ private fun GitHubUserListContent(
 
 @Composable
 private fun UserList(
-    users: List<GitHubUser>,
-    onUserClick: (GitHubUser) -> Unit,
-    onFavouriteUserClick: (GitHubUser) -> Unit
+    users: List<GitHubUserUi>,
+    onUserClick: (GitHubUserUi) -> Unit,
+    onFavouriteUserClick: (GitHubUserUi) -> Unit
 ) {
     val listState = rememberForeverLazyListState(key = "user_list")
     LazyColumn(state = listState) {
@@ -135,15 +136,15 @@ private fun UserList(
 
 @Composable
 private fun GroupedUserList(
-    groupedUsers: Map<Char, List<GitHubUser>>,
-    onUserClick: (GitHubUser) -> Unit,
-    onFavouriteUserClick: (GitHubUser) -> Unit
+    groupedUsers: Map<Char, List<GitHubUserUi>>,
+    onUserClick: (GitHubUserUi) -> Unit,
+    onFavouriteUserClick: (GitHubUserUi) -> Unit
 ) {
     val listState = rememberForeverLazyListState(key = "grouped_user_list")
     LazyColumn(state = listState) {
         groupedUsers.forEach { (header, users) ->
             stickyHeader {
-               GroupHeader(header)
+                GroupHeader(header)
             }
             items(
                 items = users,
@@ -177,15 +178,10 @@ private fun GroupHeader(text: Char) {
 
 @Composable
 private fun UserListItem(
-    user: GitHubUser,
-    onUserClick: (GitHubUser) -> Unit,
-    onFavouriteUserClick: (GitHubUser) -> Unit
+    user: GitHubUserUi,
+    onUserClick: (GitHubUserUi) -> Unit,
+    onFavouriteUserClick: (GitHubUserUi) -> Unit
 ) {
-    val color = if (user.isFavourite) {
-        Color(red = 253, green = 191, blue = 3, alpha = 255)
-    } else {
-        Color.Black
-    }
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(user.avatarUrl)
@@ -213,7 +209,6 @@ private fun UserListItem(
                 ),
             contentScale = ContentScale.Crop
         )
-
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -230,7 +225,11 @@ private fun UserListItem(
                 modifier = Modifier.clickable { onFavouriteUserClick(user) },
                 painter = painterResource(id = R.drawable.ic_favorite),
                 contentDescription = null,
-                tint = color
+                tint = if (user.isFavourite) {
+                    Color(red = 253, green = 191, blue = 3, alpha = 255)
+                } else {
+                    Color.Black
+                }
             )
         }
     }

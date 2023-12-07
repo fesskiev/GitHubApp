@@ -1,20 +1,23 @@
 package com.github.presentation.list
 
 import androidx.lifecycle.viewModelScope
-import com.github.domain.model.GitHubUser
-import com.github.domain.usecase.GetGitHubUserListUseCase
+import com.github.domain.usecase.GetGitHubUsersUseCase
+import com.github.domain.usecase.GetGroupedGitHubUsersUseCase
 import com.github.domain.usecase.UpdateGitHubUserFavouriteUseCase
 import com.github.presentation.BaseViewModel
 import com.github.presentation.list.GitHubUserListContract.Event
 import com.github.presentation.list.GitHubUserListContract.State
 import com.github.presentation.list.GitHubUserListContract.Effect
+import com.github.presentation.mapper.mapToUiModel
+import com.github.presentation.model.GitHubUserUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GitHubUserListViewModel @Inject constructor(
-    private val getGitHubUserListUseCase: GetGitHubUserListUseCase,
+    private val getGitHubUsersUseCase: GetGitHubUsersUseCase,
+    private val getGroupedGitHubUsersUseCase: GetGroupedGitHubUsersUseCase,
     private val updateGitHubUserFavouriteUseCase: UpdateGitHubUserFavouriteUseCase,
 ) : BaseViewModel<Event, State, Effect>() {
 
@@ -38,12 +41,30 @@ class GitHubUserListViewModel @Inject constructor(
         }
     }
 
-    private fun toggleGitHubUserFavourite(user: GitHubUser) {
+    private fun toggleGitHubUserFavourite(user: GitHubUserUi) {
         val login = user.login
         val isFavourite = !user.isFavourite
         viewModelScope.launch {
             updateGitHubUserFavouriteUseCase.invoke(login, isFavourite)
                 .onSuccess { updateGitHubUserFavourite(login, isFavourite) }
+                .onFailure { showError(it) }
+        }
+    }
+
+    private fun getGroupedGitHubUsers() {
+        viewModelScope.launch {
+            showProgress()
+            getGroupedGitHubUsersUseCase()
+                .onSuccess { users -> showGroupedGitHubUsers(users.mapToUiModel()) }
+                .onFailure { showError(it) }
+        }
+    }
+
+    private fun getGitHubUsers() {
+        viewModelScope.launch {
+            showProgress()
+            getGitHubUsersUseCase()
+                .onSuccess { users -> showGitHubUsers(users.map { it.mapToUiModel() }) }
                 .onFailure { showError(it) }
         }
     }
@@ -61,7 +82,8 @@ class GitHubUserListViewModel @Inject constructor(
                             } else {
                                 user
                             }
-                        }.groupBy { user ->
+                        }
+                        .groupBy { user ->
                             user.login[0]
                         }
                 )
@@ -90,31 +112,7 @@ class GitHubUserListViewModel @Inject constructor(
         }
     }
 
-    private fun getGroupedGitHubUsers() {
-        viewModelScope.launch {
-            showProgress()
-            getGitHubUserListUseCase()
-                .onSuccess {
-                    showGroupedGitHubUsers(
-                        it.groupBy { user ->
-                            user.login[0]
-                        }
-                    )
-                }
-                .onFailure { showError(it) }
-        }
-    }
-
-    private fun getGitHubUsers() {
-        viewModelScope.launch {
-            showProgress()
-            getGitHubUserListUseCase()
-                .onSuccess { showGitHubUsers(it) }
-                .onFailure { showError(it) }
-        }
-    }
-
-    private fun showGroupedGitHubUsers(groupUsers: Map<Char, List<GitHubUser>>) {
+    private fun showGroupedGitHubUsers(groupUsers: Map<Char, List<GitHubUserUi>>) {
         setViewState {
             copy(
                 isLoading = false,
@@ -126,7 +124,7 @@ class GitHubUserListViewModel @Inject constructor(
         }
     }
 
-    private fun showGitHubUsers(users: List<GitHubUser>) {
+    private fun showGitHubUsers(users: List<GitHubUserUi>) {
         setViewState {
             copy(
                 isLoading = false,
@@ -156,7 +154,7 @@ class GitHubUserListViewModel @Inject constructor(
         }
     }
 
-    private fun openGitHubUserDetailsScreen(user: GitHubUser) {
+    private fun openGitHubUserDetailsScreen(user: GitHubUserUi) {
         setViewEffect {
             Effect.ShowGitHubUserDetailsScreen(user)
         }

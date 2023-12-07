@@ -10,6 +10,9 @@ class GetGitHubUserDetailsUseCase @Inject constructor(
 
     suspend operator fun invoke(login: String): Result<GitHubUserDetails> =
         runCatching {
+            if (login.isEmpty()) {
+                error("login must not be empty!")
+            }
             repository.getGitHubUserDetails(login)
         }
 }

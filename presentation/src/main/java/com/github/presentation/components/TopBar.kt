@@ -20,11 +20,6 @@ fun FilterTopBar(
     isFilterActive: Boolean,
     onFilterClick: () -> Unit
 ) {
-    val color = if (isFilterActive) {
-        Color(red = 253, green = 191, blue = 3, alpha = 255)
-    } else {
-        Color.Black
-    }
     TopAppBar(
         title = {
             Text(text = "Користувачі GitHub")
@@ -35,7 +30,11 @@ fun FilterTopBar(
                 Icon(
                     painterResource(id = R.drawable.ic_filter),
                     contentDescription = "",
-                    tint = color
+                    tint = if (isFilterActive) {
+                        Color(red = 253, green = 191, blue = 3, alpha = 255)
+                    } else {
+                        Color.Black
+                    }
                 )
             }
         }
@@ -48,11 +47,6 @@ fun FavouriteTopBar(
     onFavouriteToggle: () -> Unit,
     onBackPressed: () -> Unit
 ) {
-    val color = if (isFavourite) {
-        Color(red = 253, green = 191, blue = 3, alpha = 255)
-    } else {
-        Color.Black
-    }
     TopAppBar(
         title = {
             Text(text = "Деталі користувача")
@@ -70,7 +64,11 @@ fun FavouriteTopBar(
                 Icon(
                     painterResource(id = R.drawable.ic_favorite),
                     contentDescription = "",
-                    tint = color
+                    tint = if (isFavourite) {
+                        Color(red = 253, green = 191, blue = 3, alpha = 255)
+                    } else {
+                        Color.Black
+                    }
                 )
             }
         }

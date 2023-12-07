@@ -11,11 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.github.domain.model.GitHubUser
 import com.github.presentation.details.GitHubUserDetailsScreen
 import com.github.presentation.details.GitHubUserDetailsViewModel
 import com.github.presentation.list.GitHubUserListScreen
 import com.github.presentation.list.GitHubUserListViewModel
+import com.github.presentation.model.GitHubUserUi
 import com.github.presentation.theme.GitHubAppTheme
 
 @Composable
@@ -34,7 +34,7 @@ fun HomeScreen() {
                     startDestination = "github_user_list_screen",
                     route = "github_users_graph"
                 ) {
-                    var gitHubUser: GitHubUser? = null
+                    var gitHubUser: GitHubUserUi? = null
                     composable("github_user_list_screen") { backStackEntry ->
                         val parentEntry = remember(backStackEntry) {
                             navController.getBackStackEntry("github_users_graph")
