@@ -1,13 +1,13 @@
-package com.github.presentation.list
+package com.github.presentation.features.users.list
 
 import androidx.lifecycle.viewModelScope
 import com.github.domain.usecase.GetGitHubUsersUseCase
 import com.github.domain.usecase.GetGroupedGitHubUsersUseCase
 import com.github.domain.usecase.UpdateGitHubUserFavouriteUseCase
-import com.github.presentation.BaseViewModel
-import com.github.presentation.list.GitHubUserListContract.Event
-import com.github.presentation.list.GitHubUserListContract.State
-import com.github.presentation.list.GitHubUserListContract.Effect
+import com.github.presentation.core.BaseViewModel
+import com.github.presentation.features.users.list.GitHubUserListContract.Event
+import com.github.presentation.features.users.list.GitHubUserListContract.State
+import com.github.presentation.features.users.list.GitHubUserListContract.Effect
 import com.github.presentation.mapper.mapToUiModel
 import com.github.presentation.model.GitHubUserUi
 import dagger.hilt.android.lifecycle.HiltViewModel

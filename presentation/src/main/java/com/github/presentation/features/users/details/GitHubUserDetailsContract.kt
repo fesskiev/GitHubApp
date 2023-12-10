@@ -1,11 +1,11 @@
-package com.github.presentation.details
+package com.github.presentation.features.users.details
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.github.domain.model.GitHubUserDetails
-import com.github.presentation.ViewEvent
-import com.github.presentation.ViewSideEffect
-import com.github.presentation.ViewState
+import com.github.presentation.core.ViewEvent
+import com.github.presentation.core.ViewSideEffect
+import com.github.presentation.core.ViewState
 import com.github.presentation.model.GitHubUserUi
 
 class GitHubUserDetailsContract {

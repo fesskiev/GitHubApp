@@ -1,4 +1,4 @@
-package com.github.presentation.details
+package com.github.presentation.features.users.details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,11 +28,11 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.github.domain.model.GitHubUserDetails
-import com.github.presentation.components.ErrorView
-import com.github.presentation.components.FavouriteTopBar
-import com.github.presentation.components.ProgressBar
-import com.github.presentation.details.GitHubUserDetailsContract.Event
-import com.github.presentation.details.GitHubUserDetailsContract.State
+import com.github.presentation.ui.components.ErrorView
+import com.github.presentation.ui.components.FavouriteTopBar
+import com.github.presentation.ui.components.ProgressBar
+import com.github.presentation.features.users.details.GitHubUserDetailsContract.Event
+import com.github.presentation.features.users.details.GitHubUserDetailsContract.State
 import com.github.presentation.model.GitHubUserUi
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder

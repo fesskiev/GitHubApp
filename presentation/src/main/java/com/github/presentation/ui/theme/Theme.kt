@@ -1,4 +1,4 @@
-package com.github.presentation.theme
+package com.github.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

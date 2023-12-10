@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.github.presentation.list
+package com.github.presentation.features.users.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -38,14 +38,14 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.github.presentation.R
-import com.github.presentation.components.ErrorView
-import com.github.presentation.components.ProgressBar
-import com.github.presentation.components.FilterTopBar
-import com.github.presentation.list.GitHubUserListContract.Event
-import com.github.presentation.list.GitHubUserListContract.State
-import com.github.presentation.list.GitHubUserListContract.Effect
+import com.github.presentation.ui.components.ErrorView
+import com.github.presentation.ui.components.ProgressBar
+import com.github.presentation.ui.components.FilterTopBar
+import com.github.presentation.features.users.list.GitHubUserListContract.Event
+import com.github.presentation.features.users.list.GitHubUserListContract.State
+import com.github.presentation.features.users.list.GitHubUserListContract.Effect
 import com.github.presentation.model.GitHubUserUi
-import com.github.presentation.utils.rememberForeverLazyListState
+import com.github.presentation.ui.utils.rememberForeverLazyListState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer

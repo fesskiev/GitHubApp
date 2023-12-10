@@ -1,4 +1,4 @@
-package com.github.presentation.utils
+package com.github.presentation.ui.utils
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable

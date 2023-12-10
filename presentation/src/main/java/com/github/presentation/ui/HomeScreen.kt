@@ -1,4 +1,4 @@
-package com.github.presentation
+package com.github.presentation.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -11,12 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.github.presentation.details.GitHubUserDetailsScreen
-import com.github.presentation.details.GitHubUserDetailsViewModel
-import com.github.presentation.list.GitHubUserListScreen
-import com.github.presentation.list.GitHubUserListViewModel
+import com.github.presentation.features.users.details.GitHubUserDetailsScreen
+import com.github.presentation.features.users.details.GitHubUserDetailsViewModel
+import com.github.presentation.features.users.list.GitHubUserListScreen
+import com.github.presentation.features.users.list.GitHubUserListViewModel
 import com.github.presentation.model.GitHubUserUi
-import com.github.presentation.theme.GitHubAppTheme
+import com.github.presentation.ui.theme.GitHubAppTheme
 
 @Composable
 fun HomeScreen() {

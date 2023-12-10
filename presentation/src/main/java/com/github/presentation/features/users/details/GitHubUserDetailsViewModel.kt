@@ -1,13 +1,13 @@
-package com.github.presentation.details
+package com.github.presentation.features.users.details
 
 import androidx.lifecycle.viewModelScope
 import com.github.domain.model.GitHubUserDetails
 import com.github.domain.usecase.GetGitHubUserDetailsUseCase
 import com.github.domain.usecase.UpdateGitHubUserFavouriteUseCase
-import com.github.presentation.BaseViewModel
-import com.github.presentation.details.GitHubUserDetailsContract.Event
-import com.github.presentation.details.GitHubUserDetailsContract.Effect
-import com.github.presentation.details.GitHubUserDetailsContract.State
+import com.github.presentation.core.BaseViewModel
+import com.github.presentation.features.users.details.GitHubUserDetailsContract.Event
+import com.github.presentation.features.users.details.GitHubUserDetailsContract.Effect
+import com.github.presentation.features.users.details.GitHubUserDetailsContract.State
 import com.github.presentation.model.GitHubUserUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
